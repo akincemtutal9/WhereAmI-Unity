@@ -10,12 +10,14 @@ public class GameController : MonoBehaviour
 {
 
 
-    public string[] yerler = {};
-        
-    [SerializeField] private List<string> yerListesi;
+    public string[] yerler = { };
+
+    [SerializeField] private List<string> yerListesi = null;
 
 
-    public Text text;
+    public Text placeText;
+    public Text playerCountText;
+    
     public int oyuncuSayisi;
     public int yerlerdekiPlacelerdenBiri;
 
@@ -25,41 +27,43 @@ public class GameController : MonoBehaviour
     {
         oyuncuSayisi = 0;
         yerlerdekiPlacelerdenBiri = Random.Range(0, yerler.Length);
-        
     }
-
-
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(yerler.Length);
+        
     }
 
     public void TexteYeriYaz()
     {
-        text.text = yerler[yerlerdekiPlacelerdenBiri];
-        
+        placeText.text = yerler[yerlerdekiPlacelerdenBiri];   
     }
 
     public void TexttekiYeriBosalt()
     {
-        text.text = "Place";
+        placeText.text = "Place";
     }
     public void OyuncuSayisiniArttir()
     {
         oyuncuSayisi++;
     }
-    public int GetOyuncuSayisi()
+    public void GetOyuncuSayisi()
     {
-        return oyuncuSayisi;
+        playerCountText.text = "Oyuncu sayýsý = " + oyuncuSayisi.ToString();
     }
     
     public void SabitYeriListeyeEkle()
     {
-        yerListesi.Add(yerler[yerlerdekiPlacelerdenBiri]);
-    }
-
+        if (yerListesi.Count!=0)
+        {
+            yerListesi.Add(yerler[yerlerdekiPlacelerdenBiri]);
+            
+        }
+        else
+        {
+            yerListesi.Add("impostor");
+        }
+        }
     
-
 }
