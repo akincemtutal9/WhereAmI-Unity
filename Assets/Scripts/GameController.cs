@@ -9,44 +9,59 @@ using Random = UnityEngine.Random;
 
 public class GameController : MonoBehaviour
 {
-    public string[] yerler = { };// ilk basta oyuna yuklenen yerler
+    #region Place Arrays
+    public string[] places = { };// ilk basta oyuna yuklenen yerler
 
-    [SerializeField] private List<string> yerListesi = null;// Yerleri listeye ekle
+    [SerializeField] private List<string> placesList = null;// Yerleri listeye ekle
 
-    [SerializeField] private string[] dataYerleri;// Listeyi Arraye çevir
+    [SerializeField] private string[] dataPlaces;// Listeyi Arraye çevir
+    #endregion
 
+    #region TEXT
     public Text placeText;
     public Text playerCountText;
-    
-    public int oyuncuSayisi;
-    
-    public int yerlerdekiPlacelerdenBiri;// ilk array
-    public int yerListesindekiPlacelerdenbiri;// ikinci array
+    #endregion
 
+    #region Players
+    public int playerCount;
+    #endregion
 
+    #region Arrays Indexes
+    public int randomPlaceIndex;// places array
+    public int randomPlacesListIndex;// placesList array
+    #endregion
 
+    #region Array Length
+    private int placesListLength;
+    #endregion
 
-    
     void Start()
     {
-        oyuncuSayisi = 0;
-        yerlerdekiPlacelerdenBiri = Random.Range(0, yerler.Length);
+        playerCount = 0;
+        randomPlaceIndex = Random.Range(0, places.Length);
         
     }
-
     // Update is called once per frame
     void Update()
     {
-        dataYerleri = yerListesi.ToArray();
-    }
+        dataPlaces = placesList.ToArray();
 
+        placesListLength = placesList.Count;
+
+        GetOyuncuSayisi();
+    }
     public void TexteYeriYaz()
     {
-        placeText.text = dataYerleri[0];
-
-        yerListesi.RemoveAt(0);
-
-       
+        if (placesListLength != 0)
+        {
+            placeText.text = dataPlaces[0];
+            placesList.RemoveAt(0);
+        }
+        else
+        {
+            placeText.text = "Just Play DUDE";
+        }    
+    
     }
 
     public void TexttekiYeriBosalt()
@@ -55,27 +70,25 @@ public class GameController : MonoBehaviour
     }
     public void OyuncuSayisiniArttir()
     {
-        oyuncuSayisi++;
-        Shuffle(yerListesi);
+        playerCount++;
+        Shuffle(placesList);
     }
     public void GetOyuncuSayisi()
     {
-        playerCountText.text = "Oyuncu sayýsý = " + oyuncuSayisi.ToString();
+        playerCountText.text = "Player Count = " + playerCount.ToString();
     }
-    
     public void SabitYeriListeyeEkle()
     {
-        if (yerListesi.Count!=0)
+        if (placesList.Count!=0)
         {
-            yerListesi.Add(yerler[yerlerdekiPlacelerdenBiri]);
+            placesList.Add(places[randomPlaceIndex]);
             
         }
         else
         {
-            yerListesi.Add("impostor");
+            placesList.Add("impostor");
         }
         }
-    
     public void Shuffle(List<string> a)
     {
         // Loop array
@@ -91,7 +104,5 @@ public class GameController : MonoBehaviour
             a[i] = a[rnd];
             a[rnd] = temp;
         }
-
-
     }    
 }
